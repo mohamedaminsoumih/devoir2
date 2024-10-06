@@ -72,45 +72,24 @@ import pandas as pd
 
 def contains_label(labels: pd.Series, label: str) -> pd.Series:
     """
-    Créez une fonction qui prend une pandas Series de chaînes de caractères où chaque chaîne de caractères est formatée comme ci-dessus
-    (c'est-à-dire "|" sépare les noms d'étiquettes comme "Music|Skateboard|Speech") et renvoie une pandas Series avec juste
-    les valeurs qui incluent `label`.
-
-    Par exemple, étant donné le label "Music" et la série suivante :
-    "Music|Skateboard|Speech"
-    "Voice|Speech"
-    "Music|Piano"
-
-    la fonction devrait retourner
-    "Music|Skateboard|Speech"
-    "Music|Piano"
+    Crée une fonction qui prend une pandas Series de chaînes de caractères
+    et renvoie une pandas Series avec juste les valeurs qui incluent `label`.
     """
     return labels[labels.str.contains(label, na=False)]
 
 
 
 
+
 def get_correlation(labels: pd.Series, label_1: str, label_2: str) -> float:
     """
-    Créez une fonction qui, avec une pandas Series comme décrit ci-dessus, renvoie la proportion de rangées
-    avec label_1 qui ont également label_2. Utilisez la fonction que vous avez créée ci-dessus.
-
-    Par exemple, supposons que la pandas Series comporte 1 000 valeurs, dont 120 ont label_1. Si 30 des 120
-    ont label_2, votre fonction doit renvoyer 0,25.
+    Calcule la corrélation entre deux labels dans une pandas Series formatée.
     """
-    
-    # TODO
-        # Filtrer les labels pour ceux qui contiennent label_1 et label_2
     filtered_labels = labels[labels.str.contains(label_1) | labels.str.contains(label_2)]
-    
-    # Créer une série binaire pour chaque label
     label_1_series = filtered_labels.str.contains(label_1).astype(int)
     label_2_series = filtered_labels.str.contains(label_2).astype(int)
+    return label_1_series.corr(label_2_series)
 
-    # Calculer la corrélation
-    correlation = label_1_series.corr(label_2_series)
-
-    return correlation
 
 
 if __name__ == "__main__":
