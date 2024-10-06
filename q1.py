@@ -68,9 +68,11 @@ def convert_ids(labels: str) -> str:
     return '|'.join(label_names)
 
 
+import pandas as pd
+
 def contains_label(labels: pd.Series, label: str) -> pd.Series:
     """
-    Créez une fonction qui prend une pandas Series de chaînes de charactères où chaque chaîne de charactères est formatée comme ci-dessus
+    Créez une fonction qui prend une pandas Series de chaînes de caractères où chaque chaîne de caractères est formatée comme ci-dessus
     (c'est-à-dire "|" sépare les noms d'étiquettes comme "Music|Skateboard|Speech") et renvoie une pandas Series avec juste
     les valeurs qui incluent `label`.
 
@@ -83,12 +85,7 @@ def contains_label(labels: pd.Series, label: str) -> pd.Series:
     "Music|Skateboard|Speech"
     "Music|Piano"
     """
-    # TODO
-    
-    def contains_label(labels: pd.Series, label: str) -> pd.Series:
-    
-  
-        return labels[labels.str.contains(label, na=False)]
+    return labels[labels.str.contains(label, na=False)]
 
 
 
@@ -101,21 +98,19 @@ def get_correlation(labels: pd.Series, label_1: str, label_2: str) -> float:
     Par exemple, supposons que la pandas Series comporte 1 000 valeurs, dont 120 ont label_1. Si 30 des 120
     ont label_2, votre fonction doit renvoyer 0,25.
     """
+    
     # TODO
-    # Filtrer les lignes qui contiennent label_1
-    contains_label_1 = labels.str.contains(label_1)
+        # Filtrer les labels pour ceux qui contiennent label_1 et label_2
+    filtered_labels = labels[labels.str.contains(label_1) | labels.str.contains(label_2)]
     
-    # Filtrer les lignes qui contiennent à la fois label_1 et label_2
-    contains_both_labels = labels[contains_label_1].str.contains(label_2)
-    
-    # Nombre total de lignes qui contiennent label_1
-    total_label_1 = contains_label_1.sum()
-    
-    # Nombre de lignes qui contiennent à la fois label_1 et label_2
-    both_count = contains_both_labels.sum()
-    
-    # Calculer la proportion (éviter la division par zéro)
-    return both_count / total_label_1 if total_label_1 > 0 else 0.0
+    # Créer une série binaire pour chaque label
+    label_1_series = filtered_labels.str.contains(label_1).astype(int)
+    label_2_series = filtered_labels.str.contains(label_2).astype(int)
+
+    # Calculer la corrélation
+    correlation = label_1_series.corr(label_2_series)
+
+    return correlation
 
 
 if __name__ == "__main__":
