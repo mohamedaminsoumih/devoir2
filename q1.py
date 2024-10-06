@@ -84,9 +84,11 @@ def contains_label(labels: pd.Series, label: str) -> pd.Series:
     "Music|Piano"
     """
     # TODO
+    
     def contains_label(labels: pd.Series, label: str) -> pd.Series:
-    # Filtrer les étiquettes pour inclure seulement celles contenant le label
-        return labels[labels.str.contains(label, na=False)]  # `na=False` pour éviter les erreurs avec des valeurs nulles
+    
+  
+        return labels[labels.str.contains(label, na=False)]
 
 
 
