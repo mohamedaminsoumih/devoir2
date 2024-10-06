@@ -84,7 +84,9 @@ def contains_label(labels: pd.Series, label: str) -> pd.Series:
     "Music|Piano"
     """
     # TODO
-    return labels[labels.str.contains(label)]
+    def contains_label(labels: pd.Series, label: str) -> pd.Series:
+        return labels[labels.apply(lambda x: label in x.split('|'))]
+
 
 
 def get_correlation(labels: pd.Series, label_1: str, label_2: str) -> float:
