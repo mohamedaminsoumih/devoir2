@@ -6,15 +6,23 @@ from q2 import download_audio, cut_audio
 from typing import List
 
 
-def filter_df(csv_path: str, label: str) -> List[str]:
-    """
-    Écrivez une fonction qui prend le path vers le csv traité (dans la partie notebook de q1) et renvoie un df avec seulement les rangées qui contiennent l'étiquette `label`.
+import pandas as pd
 
-    Par exemple:
-    get_ids("audio_segments_clean.csv", "Speech") ne doit renvoyer que les lignes où l'un des libellés est "Speech"
+def data_pipeline(df: pd.DataFrame, label: str) -> pd.DataFrame:
     """
-    # TODO
-    pass
+    Exécute un pipeline de traitement des données.
+
+    Parameters:
+    df : pd.DataFrame - DataFrame à traiter.
+    label : str - Label à filtrer.
+
+    Returns:
+    pd.DataFrame - DataFrame filtré avec les corrélations.
+    """
+    filtered_df = filter_df(df, label)  # Appelle la fonction filter_df()
+    correlations = get_correlation(filtered_df, label_1, label_2)  # Assure-toi de passer les bons labels
+    return filtered_df, correlations
+
 
 
 
@@ -35,10 +43,6 @@ def filter_df(csv_path: str, label: str) -> List[str]:
     return filtered_df['# YTID'].tolist()  # Remplace '# YTID' par la colonne appropriée si nécessaire
 
 
-
-import os
-import re
-import pandas as pd
 
 def rename_files(path_cut: str, csv_path: str) -> None:
     """
